@@ -50,7 +50,8 @@ public class LogsController extends BaseController {
         String modified;
         File file = LoggerFactory.getFile();
         if (file != null && file.exists()) {
-            FileInputStream fis = new FileInputStream(file);
+            @SuppressWarnings("resource")
+			FileInputStream fis = new FileInputStream(file);
             FileChannel channel = fis.getChannel();
             size = channel.size();
             ByteBuffer bb;

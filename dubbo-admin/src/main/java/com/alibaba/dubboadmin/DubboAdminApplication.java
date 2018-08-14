@@ -27,7 +27,5 @@ public class DubboAdminApplication {
 	public static void main(String[] args) {
 		ApplicationContext act = SpringApplication.run(DubboAdminApplication.class, args);
 		SpringUtil.setApplicationContext(act);
-
-
 	}
 }

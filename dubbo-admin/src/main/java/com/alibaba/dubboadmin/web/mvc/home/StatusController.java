@@ -32,37 +32,38 @@ import com.alibaba.dubboadmin.registry.common.StatusManager;
 import org.springframework.beans.factory.annotation.Autowired;
 
 public class StatusController {
-    private static final Pattern OK_PATTERN = Pattern.compile("o(k)", Pattern.CASE_INSENSITIVE);
-    @Autowired
-    private HttpServletResponse response;
+	private static final Pattern OK_PATTERN = Pattern.compile("o(k)", Pattern.CASE_INSENSITIVE);
+	@Autowired
+	private HttpServletResponse response;
 
-    public static String filterOK(String message) {
-        if (message == null)
-            return "";
-        // Avoid the ok keyword, use the number 0 instead of the letter o
-        return OK_PATTERN.matcher(message).replaceAll("0$1");
-    }
+	public static String filterOK(String message) {
+		if (message == null)
+			return "";
+		// Avoid the ok keyword, use the number 0 instead of the letter o
+		return OK_PATTERN.matcher(message).replaceAll("0$1");
+	}
 
-    public void execute(Map<String, Object> context) throws Exception {
-        //FIXME cache monitoring has bad performance, should be removed from summary page.
-        Map<String, com.alibaba.dubbo.common.status.Status>
-            statuses = StatusManager.getInstance().getStatusList(new String[]{"cache"});
-        com.alibaba.dubbo.common.status.Status status = StatusManager.getInstance().getStatusSummary(statuses);
-        Level level = status.getLevel();
-        if (!com.alibaba.dubbo.common.status.Status.Level.OK.equals(level)) {
-            context.put("message", level
-                    + new SimpleDateFormat(" [yyyy-MM-dd HH:mm:ss] ").format(new Date())
-                    + filterOK(status.getMessage()));
-        } else {
-            context.put("message", level.toString());
-        }
-        PrintWriter writer = response.getWriter();
-        writer.print(context.get("message").toString());
-        writer.flush();
-    }
+	public void execute(Map<String, Object> context) throws Exception {
+		// FIXME cache monitoring has bad performance, should be removed from
+		// summary page.
+		Map<String, com.alibaba.dubbo.common.status.Status> statuses = StatusManager.getInstance()
+				.getStatusList(new String[] { "cache" });
+		@SuppressWarnings("static-access")
+		com.alibaba.dubbo.common.status.Status status = StatusManager.getInstance().getStatusSummary(statuses);
+		Level level = status.getLevel();
+		if (!com.alibaba.dubbo.common.status.Status.Level.OK.equals(level)) {
+			context.put("message", level + new SimpleDateFormat(" [yyyy-MM-dd HH:mm:ss] ").format(new Date())
+					+ filterOK(status.getMessage()));
+		} else {
+			context.put("message", level.toString());
+		}
+		PrintWriter writer = response.getWriter();
+		writer.print(context.get("message").toString());
+		writer.flush();
+	}
 
-    public void setStatusHandlers(Collection<StatusChecker> statusHandlers) {
-        StatusManager.getInstance().addStatusHandlers(statusHandlers);
-    }
+	public void setStatusHandlers(Collection<StatusChecker> statusHandlers) {
+		StatusManager.getInstance().addStatusHandlers(statusHandlers);
+	}
 
 }

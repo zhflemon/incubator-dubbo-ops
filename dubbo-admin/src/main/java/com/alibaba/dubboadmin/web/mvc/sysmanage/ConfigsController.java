@@ -45,9 +45,7 @@ public class ConfigsController extends BaseController {
     }
 
     public boolean update(Map<String, Object> context) {
-        @SuppressWarnings("unchecked")
         Map<String, String[]> all = request.getParameterMap();
-        ;
         if (all != null && all.size() > 0) {
             if (!User.ROOT.equals(currentUser.getRole())) {
                 context.put("message", getMessage("HaveNoRootPrivilege"));

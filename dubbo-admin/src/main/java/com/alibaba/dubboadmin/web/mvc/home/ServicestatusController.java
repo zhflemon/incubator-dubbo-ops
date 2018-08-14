@@ -22,8 +22,6 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.alibaba.dubboadmin.governance.service.ProviderService;
-
 import org.springframework.beans.factory.annotation.Autowired;
 
 public class ServicestatusController {
@@ -33,8 +31,8 @@ public class ServicestatusController {
     @Autowired
     private HttpServletRequest request;
 
-    @Autowired
-    private ProviderService providerDAO;
+    //@Autowired
+    //private ProviderService providerDAO;
 
     @Autowired
     private HttpServletResponse response;
